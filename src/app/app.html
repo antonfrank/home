@@ -1,1 +1,32 @@
-<router-outlet />
+<div class="app-shell">
+	<header class="topbar">
+		<a class="brand" href="#top" aria-label="Anton Frank Blog home"><span class="brand-mark">✦</span><span>Anton Frank</span></a>
+		<nav class="main-nav" aria-label="Main navigation"><button class="active" (click)="setView('blog')">Blog</button><a href="#about">About</a></nav>
+		<div class="top-actions"><button class="icon-button" aria-label="Search" (click)="showSearch = !showSearch">⌕</button><button class="profile-button" aria-label="Open profile">AM</button></div>
+	</header>
+	<main id="top">
+		@if (activeView === 'blog') {
+			<section class="hero"><div class="hero-copy"><p class="eyebrow"><span></span> The Anton Frank blog</p><h1>Ideas worth<br><em>remembering.</em></h1><p class="hero-text">Thoughts on design, technology and the beautiful work in between. A quiet corner of the internet for curious minds.</p><div class="hero-meta"><span class="avatar-stack"><i>AF</i><i>MC</i><i>JB</i></span><span>Stories from a small<br>team of curious people</span></div></div><div class="hero-art" aria-hidden="true"><div class="orb orb-one"></div><div class="orb orb-two"></div><div class="orb orb-three"></div><div class="art-label">volume<br><strong>no. 04</strong></div><div class="art-star">✦</div></div></section>
+			<section class="content-section"><div class="section-heading"><div><p class="eyebrow"><span></span> Explore the blog</p><h2>Latest <em>stories</em></h2></div><div class="filters">@for (category of categories; track category) { <button [class.selected]="activeCategory === category" (click)="activeCategory = category">{{ category }}</button> }</div></div>
+				@if (showSearch) { <div class="search-row"><span>⌕</span><input [(ngModel)]="searchTerm" placeholder="Search the blog…" autofocus><button (click)="searchTerm = ''; showSearch = false">Close</button></div> }
+				@if (savedMessage) { <div class="success-message">✦ {{ savedMessage }}</div> }
+				@if (selectedPost) {
+					  <article class="article-detail"><button class="back-link" (click)="closePost()">← Back to stories</button><div class="article-hero"><img [src]="selectedPost.image" [alt]="selectedPost.title"><span class="category-pill">{{ selectedPost.category }}</span></div><div class="article-header"><div class="post-date">{{ selectedPost.date | date:'dd. MMMM yyyy' }} <span>·</span> {{ selectedPost.readTime }}</div><h2>{{ selectedPost.title }}</h2><p class="article-excerpt">{{ selectedPost.excerpt }}</p><div class="article-author"><b>{{ selectedPost.author.slice(0, 2).toUpperCase() }}</b><span>Written by {{ selectedPost.author }}</span></div></div><div class="article-content">{{ selectedPost.content }}</div>@if (selectedPost.author === 'Anton Frank') { <p class="source-note">{{ architectureSource }}</p> }</article>
+				} @else {
+					<div class="post-grid">@for (post of filteredPosts; track post.title; let first = $first) { <article class="post-card" [class.featured-card]="first"><div class="post-image"><img [src]="post.image" [alt]="post.title"><span class="category-pill">{{ post.category }}</span><button class="like-button" [class.liked]="post.liked" (click)="toggleLike(post)">{{ post.liked ? '♥' : '♡' }}</button></div><div class="post-body"><div class="post-date">{{ post.date | date:'dd. MMMM yyyy' }} <span>·</span> {{ post.readTime }}</div><h3>{{ post.title }}</h3><p>{{ post.excerpt }}</p><div class="post-footer"><span class="author"><b>{{ post.author.slice(0, 2).toUpperCase() }}</b>{{ post.author }}</span><button class="read-link" (click)="openPost(post)">Read story <span>↗</span></button></div></div></article> } @empty { <div class="empty-state"><span>✦</span><h3>No stories found</h3><p>Try another search or category.</p></div> }</div>
+				}
+			</section>
+		}
+	</main>
+	<section class="about-section" id="about">
+		<div class="about-portrait"><img src="/anton-frank.jpg" alt="Portrait of Anton Frank"></div>
+		<div class="about-orbit" aria-hidden="true"><span>✦</span></div>
+		<div class="about-copy">
+			<p class="eyebrow"><span></span> A little about me</p>
+			<h2>Hi, I'm <em>Anton.</em></h2>
+			<p>I'm Anton Frank, a Senior Software Developer based in Bern, Switzerland, with roots in Germany. My path began in physics before leading me into software engineering — a journey that still shapes the way I think.</p>
+			<div class="about-details"><span>✦ Bern, Switzerland</span><span>✦ Senior Software Developer</span></div>
+		</div>
+	</section>
+	<footer><span class="brand-mark">✦</span><span>Made with intention by Anton Frank.</span><span class="footer-note">A small journal for big ideas.</span></footer>
+</div>
